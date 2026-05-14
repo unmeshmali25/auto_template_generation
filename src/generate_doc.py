@@ -3,9 +3,11 @@ Main orchestrator: generate a communications recommendations document from raw i
 
 Usage:
     python src/generate_doc.py --case cases/google_health_app
+    python src/generate_doc.py --case cases/google_health_app --client-type custom --model your-model-name
 
 Environment:
-    OPENROUTER_API_KEY must be set in environment or .env file.
+    OPENROUTER_API_KEY must be set in environment or .env file (for OpenRouter client).
+    YOUR_CLIENT_KEY, YOUR_PASS_KEY, ENDPOINT_URL, YOUR_EMAIL (for custom client).
 """
 import os
 import sys
@@ -19,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from dotenv import load_dotenv
 
-from llm_client import OpenRouterClient
+from llm_client import OpenRouterClient, CustomChatClient
 from template_parser import get_schema
 from doc_populator import populate_template, create_placeholder_template
 
@@ -117,7 +119,13 @@ def main():
     parser.add_argument("--case", required=True, help="Path to case directory (e.g., cases/google_health_app)")
     parser.add_argument("--template", default=None, help="Path to template .docx (optional, will create placeholder if missing)")
     parser.add_argument("--output", default=None, help="Output file path (optional)")
-    parser.add_argument("--model", default="openai/gpt-4o-mini", help="OpenRouter model name")
+    parser.add_argument("--model", default="openai/gpt-4o-mini", help="Model name to use for LLM extraction")
+    parser.add_argument(
+        "--client-type",
+        choices=["openrouter", "custom"],
+        default="openrouter",
+        help="LLM client to use: openrouter (default) or custom",
+    )
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parent.parent
@@ -159,8 +167,12 @@ def main():
         output_path = Path(output_path).resolve()
 
     # LLM extraction
-    print("Calling OpenRouter LLM for structured extraction...")
-    client = OpenRouterClient()
+    if args.client_type == "custom":
+        print("Calling Custom Chat LLM for structured extraction...")
+        client = CustomChatClient()
+    else:
+        print("Calling OpenRouter LLM for structured extraction...")
+        client = OpenRouterClient()
     schema = get_schema()
     system_prompt, user_prompt = build_llm_prompt(raw_text, schema)
 
