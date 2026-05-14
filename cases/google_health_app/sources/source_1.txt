@@ -1,0 +1,10 @@
+The Google Health App crashes immediately on launch for Android users running version 12.0.3 or below. Affected users see a white screen for 2–3 seconds before the app force closes with no error message. The issue was first reported on April 28, 2026, and currently impacts approximately 14,000 devices. A hotfix is in development and expected to roll out by May 15, 2026.
+
+Q: Which Android versions are affected?
+A: Only Android devices running Google Health App version 12.0.3 or below are impacted. iOS users are not affected.
+Q: Is my health data safe?
+A: Yes. All health data is stored securely on Google's servers and is not at risk. The crash occurs at the UI layer and does not affect data integrity.
+Q: What should I do while waiting for the fix?
+A: You can access your health data via health.google.com on a mobile browser as a temporary workaround.
+Q: Will I need to reinstall the app after the update?
+A: No. The hotfix will be delivered as an automatic update through the Play Store. No reinstall is necessary.
