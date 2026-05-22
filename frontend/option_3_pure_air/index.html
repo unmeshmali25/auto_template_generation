@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid Communications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 24px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 580px;
+        }
+
+        /* Minimal header */
+        .header {
+            margin-bottom: 64px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .brand-mark {
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid #000;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-mark svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #000;
+            stroke-width: 1.8;
+        }
+
+        .brand-name {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: -0.2px;
+            color: #000;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1.2px;
+            line-height: 1.1;
+            color: #000;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #86868b;
+            font-weight: 400;
+            line-height: 1.4;
+            max-width: 460px;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: slideUp 0.6s ease forwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.15s; }
+        .form-group:nth-child(2) { animation-delay: 0.25s; }
+        .form-group:nth-child(3) { animation-delay: 0.35s; }
+        .form-group:nth-child(4) { animation-delay: 0.45s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 18px 0;
+            border: none;
+            border-bottom: 1px solid #d2d2d7;
+            background: transparent;
+            font-size: 17px;
+            font-family: inherit;
+            color: #1d1d1f;
+            transition: border-color 0.3s ease;
+            outline: none;
+            border-radius: 0;
+        }
+
+        input[type="text"]::placeholder,
+        textarea::placeholder {
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-bottom-color: #0071e3;
+        }
+
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        /* Drop zone - minimal */
+        .drop-zone {
+            border: 1px solid #d2d2d7;
+            border-radius: 18px;
+            padding: 44px 32px;
+            text-align: center;
+            background: #fbfbfd;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.drag-over {
+            border-color: #0071e3;
+            background: #f5f5f7;
+        }
+
+        .drop-zone-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            background: #f5f5f7;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drop-zone-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: #0071e3;
+            stroke-width: 1.8;
+        }
+
+        .drop-zone-text {
+            font-size: 15px;
+            color: #1d1d1f;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .drop-zone-hint {
+            font-size: 13px;
+            color: #86868b;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .image-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            animation: scaleIn 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Button */
+        .generate-btn {
+            width: 100%;
+            padding: 18px 24px;
+            background: #0071e3;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            font-size: 17px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: -0.2px;
+        }
+
+        .generate-btn:hover {
+            background: #0077ed;
+        }
+
+        .generate-btn:active {
+            transform: scale(0.98);
+            background: #0068d1;
+        }
+
+        /* Loading */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .apple-spinner {
+            width: 48px;
+            height: 48px;
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .apple-spinner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid #e8e8ed;
+            border-top-color: #0071e3;
+            animation: spin 0.9s cubic-bezier(0.6, 0.1, 0.4, 0.9) infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 19px;
+            font-weight: 600;
+            color: #1d1d1f;
+            letter-spacing: -0.3px;
+        }
+
+        .loading-subtext {
+            font-size: 15px;
+            color: #86868b;
+            margin-top: 8px;
+        }
+
+        .loading-bar {
+            width: 160px;
+            height: 3px;
+            background: #e8e8ed;
+            border-radius: 2px;
+            margin-top: 24px;
+            overflow: hidden;
+        }
+
+        .loading-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #0071e3;
+            border-radius: 2px;
+            transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Download */
+        .download-section {
+            display: none;
+            text-align: center;
+            padding: 40px 32px;
+            background: #fbfbfd;
+            border-radius: 20px;
+            margin-top: 32px;
+            animation: slideUp 0.5s ease;
+        }
+
+        .download-section.active {
+            display: block;
+        }
+
+        .check-circle {
+            width: 56px;
+            height: 56px;
+            background: #34c759;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .check-circle svg {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .download-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            letter-spacing: -0.4px;
+        }
+
+        .download-subtitle {
+            font-size: 15px;
+            color: #86868b;
+            margin-bottom: 28px;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: #34c759;
+            color: white;
+            text-decoration: none;
+            border-radius: 980px;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #30d158;
+            transform: scale(1.02);
+        }
+
+        .download-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            font-size: 12px;
+            color: #86868b;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 48px 20px; }
+            h1 { font-size: 32px; }
+            .subtitle { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="apple-spinner"></div>
+        <div class="loading-text">Generating Report</div>
+        <div class="loading-subtext">Please wait a moment</div>
+        <div class="loading-bar">
+            <div class="loading-bar-fill" id="loadingBarFill"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="brand">
+                <div class="brand-mark">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                </div>
+                <span class="brand-name">Rapid Communications</span>
+            </div>
+            <h1>Create your communications report.</h1>
+            <p class="subtitle">Enter project details and let AI generate a professional document in seconds.</p>
+        </div>
+
+        <form id="commsForm">
+            <div class="form-group">
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" placeholder="Google Health App Android Crash" required>
+            </div>
+
+            <div class="form-group">
+                <label for="projectInfo">Project Information</label>
+                <textarea id="projectInfo" placeholder="Describe the incident, timeline, affected users, and any workarounds..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Attachments</label>
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    <div class="drop-zone-text">Drop images or click to browse</div>
+                    <div class="drop-zone-hint">PNG, JPG up to 10MB</div>
+                </div>
+                <input type="file" id="fileInput" accept="image/*" multiple>
+                <div class="image-preview-container" id="imagePreviewContainer"></div>
+            </div>
+
+            <div class="form-group" style="animation-delay: 0.55s;">
+                <button type="submit" class="generate-btn">Generate Report</button>
+            </div>
+        </form>
+
+        <div class="download-section" id="downloadSection">
+            <div class="check-circle">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <div class="download-title">Report Ready</div>
+            <div class="download-subtitle">Your document has been generated successfully</div>
+            <a href="#" class="download-btn" id="downloadBtn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Report
+            </a>
+        </div>
+
+        <div class="footer">
+            Rapid Communications — Professional document generation
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingBarFill = document.getElementById('loadingBarFill');
+        const downloadSection = document.getElementById('downloadSection');
+        const commsForm = document.getElementById('commsForm');
+
+        let selectedFiles = [];
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    selectedFiles.push(file);
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'image-preview';
+                        imagePreviewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        commsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loadingOverlay.classList.add('active');
+            downloadSection.classList.remove('active');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress > 85) progress = 85;
+                loadingBarFill.style.width = progress + '%';
+            }, 350);
+
+            await new Promise(resolve => setTimeout(resolve, 2800));
+
+            clearInterval(interval);
+            loadingBarFill.style.width = '100%';
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            loadingOverlay.classList.remove('active');
+            downloadSection.classList.add('active');
+
+            commsForm.reset();
+            imagePreviewContainer.innerHTML = '';
+            selectedFiles = [];
+            loadingBarFill.style.width = '0%';
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('In production, this will download your generated .docx report');
+        });
+    </script>
+</body>
+</html>

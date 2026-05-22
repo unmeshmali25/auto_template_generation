@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid Communications — Design Options</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 21px;
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .option-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 32px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid #e8e8ed;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007AFF, #5AC8FA);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .option-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .option-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .option-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: #f5f5f7;
+            border-radius: 14px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 20px;
+        }
+
+        .option-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .option-theme {
+            font-size: 14px;
+            color: #007AFF;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .option-desc {
+            font-size: 15px;
+            color: #86868b;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .preview-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #0071e3;
+            color: white;
+            border-radius: 980px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .preview-btn:hover {
+            background: #0077ed;
+            transform: scale(1.05);
+        }
+
+        .option-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+        }
+
+        .option-card:nth-child(2) .option-theme {
+            color: #2563eb;
+        }
+
+        .option-card:nth-child(3)::before {
+            background: linear-gradient(90deg, #34c759, #30d158);
+        }
+
+        .option-card:nth-child(3) .option-theme {
+            color: #34c759;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 36px; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Design Options</h1>
+        <p class="subtitle">Choose your preferred interface for Rapid Communications</p>
+    </div>
+
+    <div class="options-grid">
+        <a href="option_1_liquid_glass/index.html" class="option-card">
+            <div class="option-number">1</div>
+            <div class="option-title">Liquid Glass</div>
+            <div class="option-theme">Glassmorphism</div>
+            <div class="option-desc">Ethereal glass effects with floating particles. Inspired by macOS Sonoma and VisionOS design language with blur, transparency, and soft gradients.</div>
+            <span class="preview-btn">Preview Design</span>
+        </a>
+
+        <a href="option_2_deep_space/index.html" class="option-card">
+            <div class="option-number">2</div>
+            <div class="option-title">Deep Space</div>
+            <div class="option-theme">Dark Mode Pro</div>
+            <div class="option-desc">Professional dark interface with deep blacks and subtle blue accents. Perfect for power users who prefer working in low-light environments.</div>
+            <span class="preview-btn">Preview Design</span>
+        </a>
+
+        <a href="option_3_pure_air/index.html" class="option-card">
+            <div class="option-number">3</div>
+            <div class="option-title">Pure Air</div>
+            <div class="option-theme">Ultra Minimal</div>
+            <div class="option-desc">Apple's signature clean aesthetic with maximum whitespace, thin typography, and a single accent color. The essence of Jony Ive's design philosophy.</div>
+            <span class="preview-btn">Preview Design</span>
+        </a>
+    </div>
+</body>
+</html>
